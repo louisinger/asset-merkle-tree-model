@@ -1,6 +1,6 @@
 module Asset where
 
-  import Data.List (groupBy, sortBy)
+  import Data.List (groupBy, sortOn)
   import Data.ByteString (ByteString)
   import Crypto.Hash.SHA256 (hash)
   import MerkleTree (Tree (Leaf, Node), node, merkleRoot)
@@ -12,7 +12,7 @@ module Asset where
   } deriving (Show)
 
   sortByType :: [Asset] -> [Asset]
-  sortByType = sortBy (comparing typeOf)
+  sortByType = sortOn typeOf
 
   groupByType :: [Asset] -> [[Asset]]
   groupByType = groupBy (\a a' -> typeOf a == typeOf a')
@@ -24,7 +24,7 @@ module Asset where
   typeTree = Leaf . hash . typeOf
 
   contentTree :: Asset -> Tree
-  contentTree a = merkleRoot [(merkleRoot . (map assetTree)) as | as <- (sortAndGroup . content) a]
+  contentTree a = merkleRoot [(merkleRoot . map assetTree) as | as <- (sortAndGroup . content) a]
 
   assetTree :: Asset -> Tree
   assetTree (Asset t []) = typeTree (Asset t [])

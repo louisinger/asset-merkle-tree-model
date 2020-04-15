@@ -47,7 +47,7 @@ module MerkleTree where
   nextLayer :: [Tree] -> [Tree]
   nextLayer [] = []
   nextLayer [l] = [l]
-  nextLayer (l:r:xs) = (node l r) : nextLayer xs 
+  nextLayer (l:r:xs) = node l r : nextLayer xs 
 
   merkleRoot :: [Tree] -> Tree
   merkleRoot [] = error "empty list"
